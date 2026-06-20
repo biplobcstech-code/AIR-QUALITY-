@@ -592,9 +592,12 @@ With an R² score of approximately 94.84%, the system provides highly reliable p
 ## 👨‍💻 Author
 
 **Biplob Kumar Dutta**
+INTERN ID:- CTIS9255
+
+NO OF WEEKS:- 8 WEEK
 
 Machine Learning Project
 
 Air Quality Index Prediction Using Random Forest
 
-2026
+
