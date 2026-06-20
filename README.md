@@ -1,33 +1,35 @@
-# 🎓 Student Performance Tracking System Using XGBoost
+# 🌍 Air Quality Index Prediction System Using Random Forest
 
 ![Python](https://img.shields.io/badge/Python-3.10-blue)
-![Machine Learning](https://img.shields.io/badge/Machine%20Learning-XGBoost-green)
+![Machine Learning](https://img.shields.io/badge/Machine%20Learning-Random%20Forest-green)
 ![Scikit-Learn](https://img.shields.io/badge/Scikit--Learn-ML-orange)
 ![Status](https://img.shields.io/badge/Project-Completed-success)
 
 ---
 
-# 📖 Overview
+# 📖 Introduction
 
-The **Student Performance Tracking System** is a Machine Learning-based application designed to predict whether a student is likely to **Pass** or **Fail** based on academic, demographic, and behavioral factors.
+Air pollution has become one of the most serious environmental and public health concerns worldwide. Poor air quality contributes to respiratory diseases, cardiovascular problems, and reduced quality of life. Monitoring and predicting air quality levels is therefore essential for governments, environmental agencies, healthcare organizations, and researchers.
 
-Educational institutions generate large volumes of student data every year. However, extracting meaningful insights from this data remains a challenge. This project utilizes the **XGBoost Classification Algorithm**, one of the most powerful ensemble learning techniques, to analyze student information and generate performance predictions.
+This project presents an **Air Quality Index (AQI) Prediction System** powered by **Machine Learning**. The system uses the **Random Forest Regression Algorithm** to analyze environmental and geographical factors and predict air quality values accurately.
 
-By identifying students at risk of academic failure early, educators can provide timely interventions, improve learning outcomes, and enhance overall student success.
+By utilizing historical air quality data, the model learns patterns between environmental indicators and AQI measurements, enabling accurate predictions and deeper understanding of factors affecting air quality.
 
 ---
 
 # 🎯 Problem Statement
 
-Educational institutions often rely on examinations and manual observation to evaluate student performance. These traditional approaches may fail to identify struggling students at an early stage.
+Air quality datasets contain large volumes of environmental measurements collected over time from various geographic regions. While this data is available, extracting meaningful insights and forecasting future air quality levels remains a challenge.
 
-The goal of this project is to build an intelligent prediction system capable of:
+Traditional statistical methods often struggle to capture complex relationships between environmental variables and pollution levels.
 
-* Analyzing student-related factors.
-* Predicting academic outcomes.
-* Classifying students as Pass or Fail.
-* Supporting data-driven educational decisions.
-* Enabling early intervention strategies.
+The goal of this project is to develop a machine learning-based prediction system capable of:
+
+* Analyzing environmental and geographical data.
+* Predicting Air Quality Index values.
+* Identifying the most influential factors affecting air quality.
+* Supporting environmental monitoring and decision-making.
+* Assisting researchers and policymakers with data-driven insights.
 
 ---
 
@@ -35,11 +37,12 @@ The goal of this project is to build an intelligent prediction system capable of
 
 The primary objectives of this project are:
 
-* Predict student academic performance using Machine Learning.
-* Identify students who may require additional support.
-* Determine factors that influence academic success.
-* Improve educational decision-making through predictive analytics.
-* Assist institutions in monitoring student progress efficiently.
+* Predict Air Quality Index (AQI) values using machine learning.
+* Analyze environmental factors affecting air quality.
+* Improve air quality forecasting accuracy.
+* Identify important predictors influencing AQI.
+* Provide meaningful visualizations for analysis.
+* Build a reusable predictive model for future deployment.
 
 ---
 
@@ -53,115 +56,179 @@ The primary objectives of this project are:
 
 * Pandas
 * NumPy
-* Scikit-Learn
-* XGBoost
-* Joblib
 * Matplotlib
 * Seaborn
+* Scikit-Learn
+* Joblib
 
 ---
 
 # 📂 Dataset Description
 
-The dataset contains academic, demographic, and social information related to students.
+The dataset contains environmental and geographical information associated with air quality measurements.
 
-### Features Include
+### Dataset Features
 
-* Age
-* Gender
-* Study Time
-* Family Background
-* School Support
-* Attendance Records
-* Previous Grades
-* Social Activities
-* Educational Factors
+| Feature        | Description                        |
+| -------------- | ---------------------------------- |
+| Unique ID      | Unique record identifier           |
+| Indicator ID   | Air quality indicator identifier   |
+| Name           | Indicator name                     |
+| Measure        | Measurement category               |
+| Measure Info   | Additional measurement information |
+| Geo Type Name  | Geographic classification          |
+| Geo Join ID    | Geographic identifier              |
+| Geo Place Name | Location name                      |
+| Time Period    | Observation period                 |
+| Start_Date     | Observation date                   |
+| Data Value     | Air Quality Value                  |
+| Message        | Additional information             |
 
 ### Target Variable
 
-The final grade (**G3**) is used to create the target variable.
+The model predicts:
 
-| Final Grade (G3) | Performance |
-| ---------------- | ----------- |
-| G3 ≥ 10          | Pass (1)    |
-| G3 < 10          | Fail (0)    |
+| Target Column |
+| ------------- |
+| Data Value    |
 
-This transforms the problem into a binary classification task.
+This represents the Air Quality Index value to be estimated.
 
 ---
 
 # 🔄 Project Workflow
 
-## 1. Data Collection
+## 1. Data Collection and Loading
 
-The dataset is loaded into a Pandas DataFrame for processing and analysis.
+The dataset is loaded into a Pandas DataFrame for preprocessing and analysis.
+
+This allows the machine learning pipeline to access and manipulate environmental records efficiently.
 
 ---
 
 ## 2. Data Exploration
 
-The dataset is explored to understand:
+Before model development, the dataset is explored to understand:
 
-* Number of records
+* Dataset dimensions
 * Available features
 * Data types
 * Missing values
-* Dataset structure
+* Overall structure
+
+This step ensures data quality and suitability for machine learning.
 
 ---
 
-## 3. Data Cleaning
+## 3. Data Cleaning and Missing Value Handling
+
+Real-world environmental datasets often contain incomplete information.
 
 To improve data quality:
 
-### Numerical Features
+### Missing Values
 
-Missing values are replaced using:
+The Message column contains missing values and is filled using a default value:
 
-* Median Imputation
+```python
+df["Message"] = df["Message"].fillna("No Message")
+```
 
-### Categorical Features
+### Duplicate Records
 
-Missing values are replaced using:
+Duplicate observations are removed:
 
-* Mode Imputation
+```python
+df.drop_duplicates(inplace=True)
+```
+
+### Date Conversion
+
+Date values are converted into proper datetime format:
+
+```python
+df["Start_Date"] = pd.to_datetime(
+    df["Start_Date"],
+    errors="coerce"
+)
+```
 
 ---
 
-## 4. Feature Encoding
+## 4. Feature Engineering
 
-Machine Learning models require numerical input.
+Additional date-based features are extracted from the observation date.
+
+### Extracted Features
+
+* Year
+* Month
+* Day
+* Quarter
+* DayOfWeek
+* IsWeekend
+
+Example:
+
+```python
+df["Year"] = df["Start_Date"].dt.year
+df["Month"] = df["Start_Date"].dt.month
+df["Day"] = df["Start_Date"].dt.day
+df["Quarter"] = df["Start_Date"].dt.quarter
+df["DayOfWeek"] = df["Start_Date"].dt.dayofweek
+```
+
+Weekend identification:
+
+```python
+df["IsWeekend"] = np.where(
+    df["DayOfWeek"] >= 5,
+    1,
+    0
+)
+```
+
+These engineered features help the model identify temporal trends in air quality.
+
+---
+
+## 5. Feature Encoding
+
+Machine learning algorithms require numerical input.
 
 Categorical features such as:
 
-* Gender
-* Family Status
-* School Support
+* Name
+* Measure
+* Geo Place Name
+* Geo Type Name
 
-are converted into numerical values using **Label Encoding**.
-
----
-
-## 5. Target Variable Creation
-
-A new column named **Performance** is created:
+are converted into numerical form using Label Encoding.
 
 ```python
-Performance = 1 if G3 >= 10 else 0
+for col in df.select_dtypes(include="object").columns:
+    le = LabelEncoder()
+    df[col] = le.fit_transform(df[col].astype(str))
 ```
-
-Where:
-
-* 1 = Pass
-* 0 = Fail
 
 ---
 
 ## 6. Feature Selection
 
-The final grade (G3) is excluded from the feature set because it directly determines the target variable.
+The target column is separated from input features.
 
-Including G3 would result in data leakage.
+```python
+X = df.drop(columns=["Data Value"])
+y = df["Data Value"]
+```
+
+### Dataset Summary
+
+| Parameter                  | Value      |
+| -------------------------- | ---------- |
+| Total Records              | 18,862     |
+| Features After Engineering | 16         |
+| Target Variable            | Data Value |
 
 ---
 
@@ -172,154 +239,239 @@ The dataset is divided into:
 * 80% Training Data
 * 20% Testing Data
 
-This ensures reliable model evaluation on unseen data.
+```python
+train_test_split(
+    X,
+    y,
+    test_size=0.20,
+    random_state=42
+)
+```
+
+This ensures unbiased model evaluation.
 
 ---
 
 # 🤖 Machine Learning Model
 
-## XGBoost Classifier
+## Random Forest Regressor
 
-The project uses the **Extreme Gradient Boosting (XGBoost)** algorithm.
+The project utilizes the Random Forest Regression algorithm.
 
-### Why XGBoost?
+Random Forest is an ensemble learning technique that combines multiple decision trees to improve prediction accuracy and reduce overfitting.
 
+### Model Configuration
+
+```python
+RandomForestRegressor(
+    n_estimators=300,
+    max_depth=20,
+    random_state=42,
+    n_jobs=-1
+)
+```
+
+### Why Random Forest?
+
+* Handles nonlinear relationships
+* Robust against noise
 * High prediction accuracy
-* Fast training speed
-* Handles large datasets efficiently
-* Built-in regularization
 * Reduced overfitting
-* Excellent feature importance analysis
+* Supports feature importance analysis
+* Performs well on large datasets
 
 ---
 
 # 🏋️ Model Training
 
-The model learns patterns from historical student data and establishes relationships between student characteristics and academic outcomes.
+The model learns relationships between environmental variables and AQI values.
 
 ```python
-xgb.fit(X_train, y_train)
+model.fit(
+    X_train,
+    y_train
+)
 ```
 
-After training, the model can classify new students as Pass or Fail.
+During training, multiple decision trees are built and combined to produce accurate predictions.
 
 ---
 
 # 🔮 Prediction
 
-Predictions are generated using:
+The trained model generates AQI predictions on unseen data.
 
 ```python
-y_pred = xgb.predict(X_test)
+y_pred = model.predict(X_test)
 ```
 
-The predicted values are compared with actual results to assess model performance.
+These predictions are compared with actual AQI values to evaluate model performance.
 
 ---
 
 # 📊 Model Evaluation
 
-The following metrics are used:
+Several regression metrics are used.
 
-## Accuracy Score
+## Mean Absolute Error (MAE)
 
-Measures overall prediction correctness.
+Measures average prediction error.
 
-```python
-accuracy_score(y_test, y_pred)
+### Result
+
+```text
+1.9077
 ```
 
 ---
 
-## Classification Report
+## Mean Squared Error (MSE)
 
-Provides:
+Measures squared prediction error.
 
-* Precision
-* Recall
-* F1-Score
-* Support
+### Result
+
+```text
+30.0101
+```
 
 ---
 
-## Confusion Matrix
+## Root Mean Squared Error (RMSE)
 
-Shows:
+Measures overall prediction deviation.
 
-* True Positives
-* True Negatives
-* False Positives
-* False Negatives
+### Result
 
-This helps evaluate classification effectiveness.
+```text
+5.4782
+```
+
+---
+
+## R² Score
+
+Measures how well the model explains variance in AQI values.
+
+### Result
+
+```text
+0.9484
+```
+
+### Interpretation
+
+The model explains approximately **94.84% of the variability** in air quality values, indicating excellent predictive performance.
 
 ---
 
 # 📈 Feature Importance Analysis
 
-XGBoost provides feature importance scores automatically.
+Random Forest provides feature importance scores that indicate the contribution of each feature.
 
-The analysis identifies factors that contribute most significantly to student success.
+### Top Influential Features
 
-Examples include:
+* Name
+* Geo Join ID
+* Unique ID
+* Geo Place Name
+* Indicator ID
+* Measure Info
+* Measure
 
-* Study Time
-* Attendance
-* Previous Grades
-* School Support
-* Family Background
+Feature importance analysis helps identify the key factors influencing air quality measurements.
 
-Feature importance helps educators understand the key drivers of academic performance.
+---
+
+# 📉 Visualization Results
+
+## Feature Importance Plot
+
+Displays the contribution of the most influential features.
+
+### Benefits
+
+* Improves model interpretability.
+* Identifies significant environmental factors.
+
+---
+
+## Actual vs Predicted Plot
+
+Compares actual AQI values with predicted values.
+
+### Observation
+
+* Strong positive relationship observed.
+* Most predictions closely match actual values.
+* Indicates high model accuracy.
+
+---
+
+## Residual Distribution Plot
+
+Analyzes prediction errors.
+
+Residual Formula:
+
+```python
+Residual = Actual Value - Predicted Value
+```
+
+### Observation
+
+* Most residuals are centered around zero.
+* Prediction errors remain small.
+* Indicates a well-trained model.
 
 ---
 
 # 💾 Model Saving
 
-The trained model is saved using Joblib.
+The trained model is saved for future deployment.
 
 ```python
 joblib.dump(
-    xgb,
-    "student_performance_model.pkl"
+    model,
+    "Air_Quality_RandomForest_Model.pkl"
 )
 ```
 
-Benefits:
+### Benefits
 
-* No retraining required
-* Faster deployment
-* Easy integration into applications
+* Reuse without retraining.
+* Faster deployment.
+* Easy integration into applications.
 
 ---
 
 # 🧪 Sample Prediction
 
-The system can predict performance for a new student record.
+The model can predict AQI values for new environmental observations.
 
-### Output Example
+### Example Output
 
 ```text
-Predicted Performance : Pass
-Probability of Passing : 96.4%
+Sample Predicted Data Value : 34.31
 ```
 
-This demonstrates real-world applicability.
+This demonstrates practical usage of the trained model.
 
 ---
 
 # 📁 Project Structure
 
-Student-Performance-Tracking-System/
+Air-Quality-Index-Prediction/
 │
-├── student_performance.py
-├── student_data.csv
-├── student_performance_model.pkl
+├── Air quality index.py
+├── Air_Quality_and_Health_Impacts.csv
+├── Air_Quality_RandomForest_Model.pkl
 ├── README.md
 │
 ├── outputs/
-│ ├── confusion_matrix.png
 │ ├── feature_importance.png
-│ └── accuracy_report.png
+│ ├── actual_vs_predicted.png
+│ └── residual_distribution.png
 │
 └── requirements.txt
 
@@ -330,19 +482,19 @@ Student-Performance-Tracking-System/
 Clone the repository:
 
 ```bash
-git clone https://github.com/yourusername/Student-Performance-Tracking-System.git
+git clone https://github.com/yourusername/Air-Quality-Index-Prediction.git
 ```
 
-Move into the project directory:
+Navigate to the project directory:
 
 ```bash
-cd Student-Performance-Tracking-System
+cd Air-Quality-Index-Prediction
 ```
 
-Install dependencies:
+Install required packages:
 
 ```bash
-pip install pandas numpy scikit-learn xgboost matplotlib seaborn joblib
+pip install pandas numpy matplotlib seaborn scikit-learn joblib
 ```
 
 ---
@@ -350,42 +502,41 @@ pip install pandas numpy scikit-learn xgboost matplotlib seaborn joblib
 # ▶️ Run the Project
 
 ```bash
-python student_performance.py
+python "Air quality index.py"
 ```
 
 ---
 
 # 📌 Current Scope
 
-The current version supports:
+The current version focuses on:
 
-* Student Performance Prediction
-* Pass/Fail Classification
+* AQI Prediction
 * Data Cleaning and Preprocessing
+* Feature Engineering
 * Feature Importance Analysis
+* Visualization
 * Model Evaluation
-* Model Saving and Loading
+* Model Saving
 
 ---
 
 # 🔮 Future Enhancements
 
-### Multi-Class Classification
+### Advanced Machine Learning Models
 
-Students can be categorized as:
+* XGBoost Regressor
+* LightGBM Regressor
+* CatBoost Regressor
 
-* Excellent
-* Good
-* Average
-* Poor
+### Deep Learning Forecasting
 
-### Real-Time Monitoring
+* LSTM Networks
+* Time-Series Prediction Models
 
-Continuous performance tracking through educational platforms.
+### Web Application Development
 
-### Web Application
-
-Deployment using:
+Using:
 
 * Flask
 * Django
@@ -393,32 +544,14 @@ Deployment using:
 
 ### Interactive Dashboards
 
-Visualization using:
+Using:
 
 * Power BI
 * Tableau
 
-### Personalized Recommendations
+### Real-Time AQI Monitoring
 
-Generate:
-
-* Study Plans
-* Academic Guidance
-* Extra Classes
-
-based on predictions.
-
-### Early Warning System
-
-Automatically alert educators about at-risk students.
-
-### Mobile Application
-
-Dedicated applications for:
-
-* Students
-* Parents
-* Teachers
+Integration with live environmental sensors.
 
 ### Cloud Deployment
 
@@ -432,21 +565,27 @@ Deploy on:
 
 # 🎯 Expected Outcomes
 
-Successful implementation can help institutions:
+Successful implementation can help:
 
-* Improve academic performance.
-* Detect struggling students early.
-* Support data-driven decision making.
-* Optimize educational resources.
-* Increase student success rates.
+* Environmental Agencies
+* Government Organizations
+* Researchers
+* Public Health Departments
+
+Benefits include:
+
+* Improved AQI forecasting
+* Better environmental planning
+* Early pollution warnings
+* Data-driven policy decisions
 
 ---
 
 # 🏆 Conclusion
 
-The Student Performance Tracking System demonstrates the practical application of Machine Learning in education. By leveraging the power of the XGBoost algorithm, the system accurately predicts whether students are likely to pass or fail and identifies the factors influencing academic performance.
+The Air Quality Index Prediction System demonstrates how Machine Learning can be applied to environmental analytics. Using the Random Forest Regression algorithm, the model accurately predicts AQI values and identifies the most influential environmental factors affecting air quality.
 
-The project serves as a strong foundation for future educational analytics platforms and highlights the growing role of Artificial Intelligence in transforming modern education.
+With an R² score of approximately 94.84%, the system provides highly reliable predictions and serves as a strong foundation for future smart-city, environmental monitoring, and air quality forecasting applications.
 
 ---
 
@@ -456,6 +595,6 @@ The project serves as a strong foundation for future educational analytics platf
 
 Machine Learning Project
 
-Student Performance Tracking System Using XGBoost
+Air Quality Index Prediction Using Random Forest
 
 2026
