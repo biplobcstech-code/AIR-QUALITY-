@@ -1,4 +1,4 @@
-# 🌍 Air Quality Index Prediction System Using Random Forest
+# Air Quality Index Prediction System Using Random Forest
 
 ![Python](https://img.shields.io/badge/Python-3.10-blue)
 ![Machine Learning](https://img.shields.io/badge/Machine%20Learning-Random%20Forest-green)
@@ -7,7 +7,7 @@
 
 ---
 
-# 📖 Introduction
+# Introduction
 
 Air pollution has become one of the most serious environmental and public health concerns worldwide. Poor air quality contributes to respiratory diseases, cardiovascular problems, and reduced quality of life. Monitoring and predicting air quality levels is therefore essential for governments, environmental agencies, healthcare organizations, and researchers.
 
@@ -17,7 +17,7 @@ By utilizing historical air quality data, the model learns patterns between envi
 
 ---
 
-# 🎯 Problem Statement
+#  Problem Statement
 
 Air quality datasets contain large volumes of environmental measurements collected over time from various geographic regions. While this data is available, extracting meaningful insights and forecasting future air quality levels remains a challenge.
 
@@ -33,7 +33,7 @@ The goal of this project is to develop a machine learning-based prediction syste
 
 ---
 
-# 🚀 Project Objectives
+#  Project Objectives
 
 The primary objectives of this project are:
 
@@ -63,7 +63,7 @@ The primary objectives of this project are:
 
 ---
 
-# 📂 Dataset Description
+#  Dataset Description
 
 The dataset contains environmental and geographical information associated with air quality measurements.
 
@@ -96,7 +96,7 @@ This represents the Air Quality Index value to be estimated.
 
 ---
 
-# 🔄 Project Workflow
+#  Project Workflow
 
 ## 1. Data Collection and Loading
 
@@ -252,7 +252,7 @@ This ensures unbiased model evaluation.
 
 ---
 
-# 🤖 Machine Learning Model
+#  Machine Learning Model
 
 ## Random Forest Regressor
 
@@ -282,7 +282,7 @@ RandomForestRegressor(
 
 ---
 
-# 🏋️ Model Training
+#  Model Training
 
 The model learns relationships between environmental variables and AQI values.
 
@@ -297,7 +297,7 @@ During training, multiple decision trees are built and combined to produce accur
 
 ---
 
-# 🔮 Prediction
+#  Prediction
 
 The trained model generates AQI predictions on unseen data.
 
@@ -309,7 +309,7 @@ These predictions are compared with actual AQI values to evaluate model performa
 
 ---
 
-# 📊 Model Evaluation
+#  Model Evaluation
 
 Several regression metrics are used.
 
@@ -383,7 +383,7 @@ Feature importance analysis helps identify the key factors influencing air quali
 
 ---
 
-# 📉 Visualization Results
+# Visualization Results
 
 ## Feature Importance Plot
 
@@ -426,7 +426,7 @@ Residual = Actual Value - Predicted Value
 
 ---
 
-# 💾 Model Saving
+#  Model Saving
 
 The trained model is saved for future deployment.
 
@@ -445,7 +445,7 @@ joblib.dump(
 
 ---
 
-# 🧪 Sample Prediction
+#  Sample Prediction
 
 The model can predict AQI values for new environmental observations.
 
@@ -459,7 +459,7 @@ This demonstrates practical usage of the trained model.
 
 ---
 
-# 📁 Project Structure
+#  Project Structure
 
 Air-Quality-Index-Prediction/
 │
@@ -477,7 +477,7 @@ Air-Quality-Index-Prediction/
 
 ---
 
-# ▶️ Installation
+#  Installation
 
 Clone the repository:
 
@@ -563,7 +563,7 @@ Deploy on:
 
 ---
 
-# 🎯 Expected Outcomes
+#  Expected Outcomes
 
 Successful implementation can help:
 
@@ -581,7 +581,7 @@ Benefits include:
 
 ---
 
-# 🏆 Conclusion
+#  Conclusion
 
 The Air Quality Index Prediction System demonstrates how Machine Learning can be applied to environmental analytics. Using the Random Forest Regression algorithm, the model accurately predicts AQI values and identifies the most influential environmental factors affecting air quality.
 
