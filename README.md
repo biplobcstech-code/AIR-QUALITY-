@@ -499,7 +499,7 @@ pip install pandas numpy matplotlib seaborn scikit-learn joblib
 
 ---
 
-# ▶️ Run the Project
+#  Run the Project
 
 ```bash
 python "Air quality index.py"
@@ -507,7 +507,7 @@ python "Air quality index.py"
 
 ---
 
-# 📌 Current Scope
+#  Current Scope
 
 The current version focuses on:
 
@@ -521,7 +521,7 @@ The current version focuses on:
 
 ---
 
-# 🔮 Future Enhancements
+#  Future Enhancements
 
 ### Advanced Machine Learning Models
 
@@ -589,15 +589,10 @@ With an R² score of approximately 94.84%, the system provides highly reliable p
 
 ---
 
-## 👨‍💻 Author
+##  Author
 
-**Biplob Kumar Dutta**
-INTERN ID:- CTIS9255
-
-NO OF WEEKS:- 8 WEEK
-
-Machine Learning Project
-
-Air Quality Index Prediction Using Random Forest
+* Biplob Kumar Dutta
+* INTERN ID:- CTIS9255
+* NO OF WEEKS:- 8 WEEK
 
 
