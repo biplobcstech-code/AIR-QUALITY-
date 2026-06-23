@@ -365,7 +365,7 @@ The model explains approximately **94.84% of the variability** in air quality va
 
 ---
 
-# 📈 Feature Importance Analysis
+#  Feature Importance Analysis
 
 Random Forest provides feature importance scores that indicate the contribution of each feature.
 
